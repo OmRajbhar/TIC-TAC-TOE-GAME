@@ -1,0 +1,74 @@
+#include <stdio.h>
+
+// Function to print the Tic Tac Toe board
+void printBoard(char board[3][3]) {
+    printf("\n");
+    for (int i = 0; i < 3; i++) {
+        printf(" %c | %c | %c \n", board[i][0], board[i][1], board[i][2]);
+        if (i < 2) printf("-----------\n");
+    }
+    printf("\n");
+}
+
+// Function to check if a player has won
+int checkWin(char board[3][3], char player) {
+    for (int i = 0; i < 3; i++) {
+        if (board[i][0] == player && board[i][1] == player && board[i][2] == player)
+            return 1; // Row win
+        if (board[0][i] == player && board[1][i] == player && board[2][i] == player)
+            return 1; // Column win
+    }
+    if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
+        return 1; // Diagonal win
+    if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
+        return 1; // Diagonal win
+    return 0; // No win yet
+}
+
+int main() {
+    char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+    int row, col, move;
+    char player = 'X';
+    int totalMoves = 0;
+    int gameOver = 0;
+
+    while (totalMoves < 9 && !gameOver) {
+        printBoard(board);
+
+        printf("Player %c, enter your move (1-9): ", player);
+        scanf("%d", &move);
+
+        if (move < 1 || move > 9) {
+            printf("Invalid input. Please choose a number between 1 and 9.\n");
+            continue;
+        }
+
+        row = (move - 1) / 3;
+        col = (move - 1) % 3;
+
+        if (board[row][col] == 'X' || board[row][col] == 'O') {
+            printf("Cell already marked. Choose an empty cell.\n");
+            continue;
+        }
+
+        board[row][col] = player;
+        totalMoves++;
+
+        if (totalMoves >= 5) {
+            if (checkWin(board, player)) {
+                printBoard(board);
+                printf("Player %c wins!\n", player);
+                gameOver = 1;
+            }
+        }
+
+        player = (player == 'X') ? 'O' : 'X';
+    }
+
+    if (!gameOver) {
+        printBoard(board);
+        printf("It's a draw!\n");
+    }
+
+    return 0;
+}
