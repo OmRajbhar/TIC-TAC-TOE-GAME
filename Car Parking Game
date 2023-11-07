@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int parkingSpot;
+    int carPosition = 0;
+    int moves = 0;
+    int timeLimit = 5;
+    time_t startTime, currentTime;
+
+    printf("Welcome to the Parking Game!\n");
+    printf("Try to park the car within %d seconds.\n", timeLimit);
+    
+    srand(time(NULL));
+    parkingSpot = rand() % 10 + 1; // Randomly set the parking spot (1-10).
+
+    printf("Parking spot is at position %d.\n", parkingSpot);
+
+    startTime = time(NULL);
+
+    while (1) {
+        printf("Current position of the car: %d\n", carPosition);
+
+        currentTime = time(NULL);
+        if (currentTime - startTime >= timeLimit) {
+            printf("Time's up! You didn't park the car in time.\n");
+            break;
+        }
+
+        if (carPosition == parkingSpot) {
+            printf("Congratulations! You parked the car in %d moves.\n", moves);
+            break;
+        } else {
+            printf("Press 'l' to move left, 'r' to move right: ");
+            char move;
+            scanf(" %c", &move);
+
+            if (move == 'l') {
+                if (carPosition > 0) {
+                    carPosition--;
+                } else {
+                    printf("You are already at the leftmost position.\n");
+                }
+            } else if (move == 'r') {
+                if (carPosition < 10) {
+                    carPosition++;
+                } else {
+                    printf("You are already at the rightmost position.\n");
+                }
+            } else {
+                printf("Invalid move! Please press 'l' to move left or 'r' to move right.\n");
+            }
+
+            moves++;
+        }
+    }
+
+    return 0;
+}
